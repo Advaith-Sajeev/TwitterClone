@@ -1,0 +1,63 @@
+.tweetBox {
+  padding-bottom: 10px;
+  border-bottom: 8px solid var(--twitter-background);
+  padding-right: 10px;
+}
+
+.tweetBox > form {
+  display: flex;
+  flex-direction: column;
+}
+
+.tweetbox__input {
+  padding: 20px;
+  display: flex;
+}
+
+.tweetbox__input > input {
+  flex: 1;
+  margin-left: 20px;
+  font-size: 20px;
+  border: none;
+}
+
+.tweetBox__tweetButton {
+  background-color: var(--twitter-color) !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 900 !important;
+  text-transform: inherit !important;
+  border-radius: 30px !important;
+  width: 150px !important;
+  height: 40px !important;
+  margin-top: 20px !important;
+  margin-left: 20px !important;
+}
+
+.tweetbox__input input[type="file"] {
+  display: none;
+}
+
+.tweetbox__input label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.tweetbox__input label span {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+.tweetbox__input label {
+  background-color: var(--twitter-color);
+  color: white;
+  padding: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.fileInputText {
+  color: white !important;
+  font-weight: 700 !important;
+}
