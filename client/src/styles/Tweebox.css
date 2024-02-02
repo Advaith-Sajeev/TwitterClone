@@ -15,6 +15,7 @@
 }
 
 .tweetbox__input > input {
+  outline-width: 0;
   flex: 1;
   margin-left: 20px;
   font-size: 20px;

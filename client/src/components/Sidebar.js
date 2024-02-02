@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/Sidebar.css";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import SidebarOption from "./SidebarOption";
@@ -10,16 +10,36 @@ import { useNavigate } from "react-router-dom";
 function Sidebar() {
   const history = useNavigate();
 
+  const [active, setActive] = useState("home");
+
   const logout = () => {
     history("/login");
+  };
+  const home = () => {
+    setActive("home");
+    history("/home");
+  };
+  const message = () => {
+    setActive("message");
+    history("/message");
   };
 
   return (
     <div className="Sidebar">
       <TwitterIcon className="sidebar__twittericon" />
 
-      <SidebarOption active Icon={HomeIcon} text="Home" />
-      <SidebarOption Icon={MailOutlineIcon} text="Messages" />
+      <SidebarOption
+        active={active === "home"}
+        Icon={HomeIcon}
+        onClick={home}
+        text="Home"
+      />
+      <SidebarOption
+        active={active === "message"}
+        Icon={MailOutlineIcon}
+        onClick={message}
+        text="Messages"
+      />
 
       <Button
         variant="outlined"

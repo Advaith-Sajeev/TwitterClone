@@ -27,6 +27,8 @@ function Feed() {
     fetchData();
   }, []);
 
+  const username = location.state?.id || "Guest";
+
   return (
     <div className="feed">
       <div className="feed_header">
@@ -34,7 +36,7 @@ function Feed() {
       </div>
       <TweetBox
         updateFeed={updateFeed}
-        username={location.state.id}
+        username={username}
         name={location.state.name}
       />
 
