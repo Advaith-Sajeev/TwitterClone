@@ -5,8 +5,10 @@ const cors = require("cors");
 const user = require("./models/User");
 const posts = require("./models/Posts");
 const bcrypt = require("bcrypt");
-const s3Router = require("./s3Upload");
-const jwt = require("jsonwebtoken");
+const s3Router = require("./Controllers/s3Upload");
+const generateToken = require("./config/generateToken");
+const chatRoutes = require("./Routes/chatRoutes");
+const messageRoutes = require("./Routes/messageRoutes");
 
 const app = express();
 
@@ -34,17 +36,10 @@ app.post("/login", async (req, res) => {
       const passwordMatch = await bcrypt.compare(password, userRecord.password);
 
       if (passwordMatch) {
-        const token = jwt.sign(
-          {
-            username: userRecord.username,
-            password: userRecord.password,
-          },
-          "secret123"
-        );
         return res.json({
           status: "exist",
           name: userRecord.name,
-          token: token,
+          token: generateToken(user._id),
         });
       } else {
         return res.json({ status: "notexist" });
@@ -62,6 +57,10 @@ app.get("/register", cors(), (req, res) => {});
 
 app.post("/register", async (req, res) => {
   const { name, username, password } = req.body;
+
+  if (!password) {
+    return res.status(400).json({ message: "Password is required" });
+  }
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -115,6 +114,9 @@ app.post("/home", async (req, res) => {
     console.log(error);
   }
 });
+
+app.use("/chat", chatRoutes);
+// app.use("/message", messageRoutes);
 
 const start = async () => {
   try {
