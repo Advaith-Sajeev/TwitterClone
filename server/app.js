@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const s3Router = require("./Controllers/s3Upload");
 const generateToken = require("./config/generateToken");
 const chatRoutes = require("./Routes/chatRoutes");
+const userRoutes = require("./Routes/userRoutes");
 const messageRoutes = require("./Routes/messageRoutes");
 
 const app = express();
@@ -37,9 +38,10 @@ app.post("/login", async (req, res) => {
 
       if (passwordMatch) {
         return res.json({
+          _id: userRecord._id,
           status: "exist",
           name: userRecord.name,
-          token: generateToken(user._id),
+          token: generateToken(userRecord._id),
         });
       } else {
         return res.json({ status: "notexist" });
@@ -73,11 +75,17 @@ app.post("/register", async (req, res) => {
   try {
     const check = await user.findOne({ username: username });
     if (check) {
-      return res.json("exist");
+      return res.json({
+        status: "exist",
+      });
     } else {
       const result = await user.insertMany([data]);
       console.log("Inserted data:", result);
-      return res.json("notexist");
+      return res.json({
+        status: "notexist",
+        _id: result[0]._id,
+        token: generateToken(result[0]._id),
+      });
     }
   } catch (error) {
     console.error("Error during registration:", error);
@@ -115,6 +123,7 @@ app.post("/home", async (req, res) => {
   }
 });
 
+app.use("/user", userRoutes);
 app.use("/chat", chatRoutes);
 // app.use("/message", messageRoutes);
 

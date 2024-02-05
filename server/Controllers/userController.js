@@ -1,7 +1,8 @@
 const asyncHandler = require("express-async-handler");
-const User = require("../models/userModel");
+const User = require("../models/User");
 
 const allUser = asyncHandler(async (req, res) => {
+  console.log(req.query.search);
   const keyword = req.query.search
     ? {
         $or: [
@@ -11,8 +12,10 @@ const allUser = asyncHandler(async (req, res) => {
       }
     : {};
 
-  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+  const users = await User.find(keyword).find({
+    _id: { $ne: req.user._id },
+  });
   res.send(users);
 });
 
-module.exports = { allUsers };
+module.exports = { allUser };
